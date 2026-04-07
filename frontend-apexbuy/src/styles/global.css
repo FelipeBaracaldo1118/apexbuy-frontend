@@ -1,0 +1,197 @@
+/* ============================================================================
+   APEXBUY - GLOBAL STYLES
+   ============================================================================ */
+
+   @import './variables.css';
+
+   /* Reset CSS */
+   *, *::before, *::after {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+   }
+   
+   html {
+     font-size: 16px;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+   }
+   
+   body {
+     font-family: var(--font-family);
+     font-size: var(--font-size-base);
+     line-height: 1.5;
+     color: var(--primary-black);
+     background-color: var(--background-light);
+     transition: background-color var(--transition-base), color var(--transition-base);
+   }
+   
+   /* Scrollbar personalizado */
+   ::-webkit-scrollbar {
+     width: 8px;
+     height: 8px;
+   }
+   
+   ::-webkit-scrollbar-track {
+     background: var(--gray-100);
+   }
+   
+   ::-webkit-scrollbar-thumb {
+     background: var(--secondary-gray);
+     border-radius: var(--border-radius-full);
+   }
+   
+   ::-webkit-scrollbar-thumb:hover {
+     background: var(--gray-500);
+   }
+   
+   /* Tipografía */
+   h1, h2, h3, h4, h5, h6 {
+     font-weight: 600;
+     line-height: 1.2;
+     margin-bottom: var(--spacing-md);
+   }
+   
+   h1 { font-size: var(--font-size-5xl); }
+   h2 { font-size: var(--font-size-4xl); }
+   h3 { font-size: var(--font-size-3xl); }
+   h4 { font-size: var(--font-size-2xl); }
+   h5 { font-size: var(--font-size-xl); }
+   h6 { font-size: var(--font-size-lg); }
+   
+   p {
+     margin-bottom: var(--spacing-md);
+   }
+   
+   a {
+     color: var(--primary-red);
+     text-decoration: none;
+     transition: color var(--transition-fast);
+   }
+   
+   a:hover {
+     color: var(--error);
+   }
+   
+   /* Botones base */
+   button {
+     font-family: inherit;
+     font-size: inherit;
+     cursor: pointer;
+     border: none;
+     outline: none;
+     transition: all var(--transition-fast);
+   }
+   
+   button:disabled {
+     cursor: not-allowed;
+     opacity: 0.6;
+   }
+   
+   /* Inputs base */
+   input, textarea, select {
+     font-family: inherit;
+     font-size: inherit;
+     border: 1px solid var(--gray-300);
+     border-radius: var(--border-radius-md);
+     padding: var(--spacing-sm) var(--spacing-md);
+     outline: none;
+     transition: border-color var(--transition-fast);
+   }
+   
+   input:focus, textarea:focus, select:focus {
+     border-color: var(--primary-red);
+   }
+   
+   /* Utilidades */
+   .container {
+     width: 100%;
+     max-width: 1280px;
+     margin: 0 auto;
+     padding: 0 var(--spacing-lg);
+   }
+   
+   .text-center { text-align: center; }
+   .text-left { text-align: left; }
+   .text-right { text-align: right; }
+   
+   .text-primary { color: var(--primary-red); }
+   .text-success { color: var(--success); }
+   .text-warning { color: var(--warning); }
+   .text-error { color: var(--error); }
+   .text-gray { color: var(--secondary-gray); }
+   
+   .bg-primary { background-color: var(--primary-red); }
+   .bg-success { background-color: var(--success); }
+   .bg-warning { background-color: var(--warning); }
+   .bg-error { background-color: var(--error); }
+   .bg-light { background-color: var(--background-light); }
+   .bg-white { background-color: var(--white); }
+   
+   /* Cards */
+   .card {
+     background: var(--white);
+     border-radius: var(--border-radius-lg);
+     box-shadow: var(--shadow-md);
+     padding: var(--spacing-lg);
+     transition: box-shadow var(--transition-base);
+   }
+   
+   .card:hover {
+     box-shadow: var(--shadow-lg);
+   }
+   
+   /* Loading spinner */
+   .spinner {
+     border: 3px solid var(--gray-200);
+     border-top: 3px solid var(--primary-red);
+     border-radius: 50%;
+     width: 40px;
+     height: 40px;
+     animation: spin 1s linear infinite;
+   }
+   
+   @keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+   }
+   
+   /* Responsive utilities */
+   .hide-mobile {
+     display: block;
+   }
+   
+   .show-mobile {
+     display: none;
+   }
+   
+   @media (max-width: 768px) {
+     .hide-mobile {
+       display: none;
+     }
+     
+     .show-mobile {
+       display: block;
+     }
+   }
+   
+   /* Transiciones de página */
+   .page-enter {
+     opacity: 0;
+     transform: translateY(20px);
+   }
+   
+   .page-enter-active {
+     opacity: 1;
+     transform: translateY(0);
+     transition: opacity 300ms, transform 300ms;
+   }
+   
+   .page-exit {
+     opacity: 1;
+   }
+   
+   .page-exit-active {
+     opacity: 0;
+     transition: opacity 200ms;
+   }
