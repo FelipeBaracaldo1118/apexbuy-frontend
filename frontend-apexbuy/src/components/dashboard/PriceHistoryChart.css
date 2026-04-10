@@ -1,0 +1,115 @@
+/* ============================================================================
+   PRICE HISTORY CHART STYLES
+   ============================================================================ */
+
+   .chart-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .chart-header h3 {
+    font-size: var(--font-size-xl);
+    color: var(--primary-black);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+  }
+  
+  .chart-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--secondary-gray);
+    margin: 0;
+  }
+  
+  .chart-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--primary-black);
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+  }
+  
+  .chart-select:hover {
+    border-color: var(--gray-400);
+  }
+  
+  .chart-select:focus {
+    outline: none;
+    border-color: var(--primary-red);
+  }
+  
+  .chart-body {
+    height: 400px;
+    position: relative;
+  }
+  
+  /* Loading & Empty States */
+  .chart-loading,
+  .chart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: var(--spacing-md);
+  }
+  
+  .chart-loading p,
+  .chart-empty p {
+    color: var(--secondary-gray);
+    font-size: var(--font-size-sm);
+  }
+  
+  /* Dark Mode */
+  [data-theme="dark"] .chart-card {
+    background: var(--gray-800);
+  }
+  
+  [data-theme="dark"] .chart-header {
+    border-bottom-color: var(--gray-700);
+  }
+  
+  [data-theme="dark"] .chart-header h3 {
+    color: var(--gray-50);
+  }
+  
+  [data-theme="dark"] .chart-select {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+    color: var(--gray-50);
+  }
+  
+  [data-theme="dark"] .chart-select:hover {
+    border-color: var(--gray-500);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .chart-header {
+      flex-direction: column;
+      gap: var(--spacing-md);
+      align-items: stretch;
+    }
+  
+    .chart-select {
+      width: 100%;
+    }
+  
+    .chart-body {
+      height: 300px;
+    }
+  }
