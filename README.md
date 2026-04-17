@@ -14,24 +14,47 @@ Aplicacion frontend de ApexBuy construida con React + Vite.
 - Axios
 - React Hook Form
 - Chart.js
-
-## Estado actual del proyecto
-
-El frontend se encuentra en etapa de base + estructura inicial:
-
-- Estructura Vite funcionando (`npm run dev`, `build`, `preview`, `lint`).
-- Sistema de autenticacion definido en `src/services/auth.js` (login, register, logout, manejo de token y usuario en `localStorage`).
-- Contexto de tema dark/light implementado en `src/context/Themecontext.js`.
-- Contexto de autenticacion y cliente API aun en proceso de integracion:
-  - `src/context/Authcontext.js` (pendiente de consolidar)
-  - `src/services/api.js` (pendiente de configurar instancia de Axios)
-- `src/App.jsx` aun contiene la vista inicial de Vite como placeholder.
+- React Hot Toast
+- XLSX + File Saver (exportaciones)
 
 ## Estructura del repo
 
 El codigo de la aplicacion esta en:
 
 `frontend-apexbuy/`
+
+## Funcionalidades implementadas
+
+- Landing page publica (`/`).
+- Autenticacion con login y registro (`/login`, `/register`).
+- Rutas protegidas con `ProtectedRoute`.
+- Dashboard con componentes de metricas y graficas.
+- Catalogo de productos (`/products`) con:
+  - busqueda
+  - filtros por fuente y margen
+  - modal de detalle
+  - exportacion a Excel
+- Historial (`/history`) con:
+  - cards por producto
+  - historial simulado de cambios
+  - modal con detalle
+  - exportacion de reporte
+- Configuracion (`/settings`) con:
+  - perfil
+  - preferencias de notificaciones
+  - fuentes
+  - apariencia (dark mode)
+
+## Arquitectura frontend
+
+- `src/context/AuthContext.jsx`: estado de sesion, login/register/logout, usuario actual y first-time flags.
+- `src/context/ThemeContext.jsx`: tema light/dark persistido en `localStorage`.
+- `src/context/NotificationContext.jsx`: toasts centralizados (`success`, `error`, `info`, `warning`, etc.).
+- `src/services/api.js`: cliente Axios centralizado con:
+  - `baseURL` desde `VITE_API_URL`
+  - interceptor para token JWT (`Authorization: Bearer ...`)
+  - manejo global de `401` (limpia sesion y redirige a `/login`)
+- `src/services/auth.js`: soporte de auth real y mock.
 
 ## Requisitos
 
@@ -81,6 +104,18 @@ npm run dev
 
 Por defecto Vite levanta en `http://localhost:5173`.
 
+## Variables y modo de autenticacion
+
+En `src/services/auth.js` existe un switch:
+
+- `USE_MOCK = true`: usa credenciales demo sin backend real de auth.
+- `USE_MOCK = false`: usa endpoints reales del backend.
+
+Credenciales demo actuales:
+
+- `admin@apexbuy.com`
+- `admin123`
+
 ## Scripts disponibles
 
 Desde `frontend-apexbuy/`:
@@ -96,14 +131,40 @@ Desde `frontend-apexbuy/`:
 - Si cambias el puerto o dominio del backend, actualiza el `.env`.
 - Revisa CORS en el backend para permitir requests desde el host del frontend.
 
-### Endpoints esperados (auth)
+### Endpoints consumidos actualmente
 
-Actualmente el frontend espera estos endpoints en el backend:
+Auth:
 
 - `POST /api/auth/login`
 - `POST /api/auth/register`
 
-Respuestas esperadas:
+Analisis:
+
+- `GET /api/analysis/opportunities`
+- `GET /api/analysis/opportunities/filtered`
+- `GET /api/analysis/stats`
+- `GET /api/analysis/product/:productId/history`
+- `GET /api/analysis/product/:productId/changes`
+- `GET /api/analysis/group/:groupId`
+
+Actualizacion:
+
+- `GET /api/update/all-providers`
+- `GET /api/update/bose`
+- `GET /api/update/samsung`
+- `GET /api/update/ktronix`
+- `GET /api/update/mansion`
+- `GET /api/update/falabella`
+
+Productos y grupos (preparado en frontend):
+
+- `GET /api/products`
+- `GET /api/products/:id`
+- `GET /api/products/search?q=...`
+- `GET /api/groups`
+- `GET /api/groups/:id`
+
+Respuesta esperada para auth:
 
 ```json
 {
@@ -117,13 +178,12 @@ Respuestas esperadas:
 }
 ```
 
-## Proximo paso recomendado
+## Estado actual
 
-Para tener la integracion completa frontend-backend:
-
-1. Implementar `src/services/api.js` con `axios.create({ baseURL: import.meta.env.VITE_API_URL })`.
-2. Consolidar `AuthProvider` en `src/context/Authcontext.js` y envolver `App` desde `src/main.jsx`.
-3. Reemplazar el contenido placeholder de `src/App.jsx` por el flujo real (login/register/dashboard).
+- Frontend funcional con rutas principales y layout completo.
+- Integracion de datos activa en `Products` e `History` via `analysisAPI`.
+- Modulo de auth con modo mock activo para facilitar desarrollo local.
+- Persistencia local de sesion, tema y preferencias basicas.
 
 ## Build de produccion
 
