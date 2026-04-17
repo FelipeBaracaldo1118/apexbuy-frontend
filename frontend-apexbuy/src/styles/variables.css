@@ -4,105 +4,490 @@
    Paleta de colores del branding oficial
    ============================================================================ */
 
-   :root {
-    /* Colores Principales */
-    --primary-red: #E12613;
-    --primary-black: #1D1D1B;
-    --secondary-gray: #828280;
-    --background-light: #F6F6F6;
-    --white: #FFFFFF;
+:root {
+  /* Colores Principales */
+  --primary-red: #E12613;
+  --primary-black: #1D1D1B;
+  --secondary-gray: #828280;
+  --background: #FFFFFF;
+  --background-secondary: #F6F6F6;
+  --white: #FFFFFF;
+  --text-primary: #1D1D1B;
+  --text-secondary: #828280;
+  --border-color: #e5e7eb;
+
+  /* Colores Semánticos */
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --error: #E12613;
+  --error-light: #fee2e2;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
+
+  /* Escala de Grises */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+
+  /* Bordes */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 9999px;
+
+  /* Espaciado */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* Tipografía */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+
+  /* Transiciones */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* ============================================================================
+   DARK MODE - VARIABLES INVERTIDAS
+   ============================================================================ */
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --background: #0a0a0a;
+  --background-secondary: #1a1a1a;
+  --white: #1a1a1a;
   
-    /* Colores Semánticos */
-    --success: #10b981;
-    --success-light: #d1fae5;
-    --warning: #f59e0b;
-    --warning-light: #fef3c7;
-    --error: #E12613;
-    --error-light: #fee2e2;
-    --info: #3b82f6;
-    --info-light: #dbeafe;
+  /* Text */
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --primary-black: #f5f5f5;
+  --secondary-gray: #a3a3a3;
   
-    /* Escala de Grises */
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
-  
-    /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-  
-    /* Bordes */
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-    --border-radius-xl: 16px;
-    --border-radius-full: 9999px;
-  
-    /* Espaciado */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    --spacing-2xl: 48px;
-    --spacing-3xl: 64px;
-  
-    /* Tipografía */
-    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-size-xs: 12px;
-    --font-size-sm: 14px;
-    --font-size-base: 16px;
-    --font-size-lg: 18px;
-    --font-size-xl: 20px;
-    --font-size-2xl: 24px;
-    --font-size-3xl: 30px;
-    --font-size-4xl: 36px;
-    --font-size-5xl: 48px;
-  
-    /* Transiciones */
-    --transition-fast: 150ms ease-in-out;
-    --transition-base: 200ms ease-in-out;
-    --transition-slow: 300ms ease-in-out;
-  
-    /* Z-index */
-    --z-dropdown: 1000;
-    --z-sticky: 1020;
-    --z-fixed: 1030;
-    --z-modal-backdrop: 1040;
-    --z-modal: 1050;
-    --z-popover: 1060;
-    --z-tooltip: 1070;
-  }
-  
-  /* ============================================================================
-     DARK MODE
-     ============================================================================ */
-  
-  [data-theme="dark"] {
-    --background-light: #1D1D1B;
-    --white: #1f2937;
-    --primary-black: #F6F6F6;
-    --secondary-gray: #9ca3af;
-  
-    /* Ajustar grises para dark mode */
-    --gray-50: #111827;
-    --gray-100: #1f2937;
-    --gray-200: #374151;
-    --gray-300: #4b5563;
-    --gray-400: #6b7280;
-    --gray-500: #9ca3af;
-    --gray-600: #d1d5db;
-    --gray-700: #e5e7eb;
-    --gray-800: #f3f4f6;
-    --gray-900: #f9fafb;
-  }
+  /* Borders */
+  --border-color: #2a2a2a;
+
+  /* Grises invertidos */
+  --gray-50: #1a1a1a;
+  --gray-100: #252525;
+  --gray-200: #2a2a2a;
+  --gray-300: #333333;
+  --gray-400: #525252;
+  --gray-500: #737373;
+  --gray-600: #a3a3a3;
+  --gray-700: #d4d4d4;
+  --gray-800: #e5e5e5;
+  --gray-900: #f5f5f5;
+
+  /* Success/Error más brillantes */
+  --success: #22c55e;
+  --success-light: rgba(34, 197, 94, 0.1);
+  --error: #ef4444;
+  --error-light: rgba(239, 68, 68, 0.1);
+  --warning: #fbbf24;
+  --warning-light: rgba(251, 191, 36, 0.1);
+  --info: #60a5fa;
+  --info-light: rgba(96, 165, 250, 0.1);
+
+  /* Sombras oscuras */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7);
+}
+
+/* ============================================================================
+   DARK MODE - ESTILOS GLOBALES
+   ============================================================================ */
+
+[data-theme="dark"] body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+/* Todos los textos por defecto */
+[data-theme="dark"] * {
+  color: var(--text-primary);
+}
+
+/* Headers y títulos */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Párrafos y spans */
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] label,
+[data-theme="dark"] div {
+  color: var(--text-primary);
+}
+
+/* ============================================================================
+   DARK MODE - COMPONENTES ESPECÍFICOS
+   ============================================================================ */
+
+/* Sidebar */
+[data-theme="dark"] .sidebar {
+  background: #111111 !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .sidebar-item {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .sidebar-item:hover {
+  background: var(--gray-100) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .sidebar-item.active {
+  background: var(--gray-200) !important;
+  color: var(--primary-red) !important;
+}
+
+/* Header */
+[data-theme="dark"] .header {
+  background: #111111 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Main content area */
+[data-theme="dark"] .dashboard-main,
+[data-theme="dark"] .dashboard-content,
+[data-theme="dark"] main {
+  background: var(--background) !important;
+}
+
+/* Cards - TODAS las cards */
+[data-theme="dark"] .card,
+[data-theme="dark"] .stats-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .update-card,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .comparison-card,
+[data-theme="dark"] .alert-card,
+[data-theme="dark"] .dashboard-card {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .product-card:hover {
+  border-color: var(--primary-red) !important;
+}
+
+/* Inputs y selects */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .filter-search,
+[data-theme="dark"] .filter-select {
+  background: var(--gray-100) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] select::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: var(--primary-red) !important;
+}
+
+/* Botones */
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] button.primary {
+  background: var(--primary-red) !important;
+  color: white !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] button.secondary {
+  background: var(--gray-200) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--gray-300) !important;
+}
+
+/* Tablas */
+[data-theme="dark"] table {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] table th {
+  background: var(--gray-100) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] table td {
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] table tbody tr:hover {
+  background: var(--gray-100) !important;
+}
+
+/* Modal */
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.9) !important;
+}
+
+[data-theme="dark"] .modal-container,
+[data-theme="dark"] .modal-content {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Badges y Pills */
+[data-theme="dark"] .badge,
+[data-theme="dark"] .pill,
+[data-theme="dark"] .tag {
+  background: var(--gray-200) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Success badges */
+[data-theme="dark"] .badge.success,
+[data-theme="dark"] .badge-success {
+  background: var(--success-light) !important;
+  color: var(--success) !important;
+}
+
+/* Error badges */
+[data-theme="dark"] .badge.error,
+[data-theme="dark"] .badge-error {
+  background: var(--error-light) !important;
+  color: var(--error) !important;
+}
+
+/* Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--gray-100) !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--gray-400) !important;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500) !important;
+}
+
+/* Dropdowns */
+[data-theme="dark"] .dropdown-menu,
+[data-theme="dark"] select option {
+  background: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Links */
+[data-theme="dark"] a {
+  color: var(--primary-red) !important;
+}
+
+[data-theme="dark"] a:hover {
+  color: #c41f0f !important;
+}
+
+/* Stats y números grandes */
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .metric-value,
+[data-theme="dark"] .big-number {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* Labels pequeños */
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .metric-label,
+[data-theme="dark"] .small-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Dividers */
+[data-theme="dark"] hr,
+[data-theme="dark"] .divider {
+  border-color: var(--border-color) !important;
+}
+
+/* ============================================================================
+   DARK MODE - AJUSTES FINALES
+   ============================================================================
+   Agregar al FINAL de src/styles/variables.css
+   ============================================================================ */
+
+/* Stats cards superiores - Texto más visible */
+[data-theme="dark"] .stats-card h3,
+[data-theme="dark"] .stats-card p,
+[data-theme="dark"] .stat-card h3,
+[data-theme="dark"] .stat-card p,
+[data-theme="dark"] .stat-card .stat-label {
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .stats-card .stat-value,
+[data-theme="dark"] .stat-card .stat-value,
+[data-theme="dark"] .stat-number {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Labels pequeños en cards */
+[data-theme="dark"] .update-card p,
+[data-theme="dark"] .product-card p {
+  color: #d1d5db !important;
+}
+
+/* Botones outline/secondary más visibles */
+[data-theme="dark"] button[class*="outline"],
+[data-theme="dark"] .btn-outline,
+[data-theme="dark"] button:not(.btn-primary):not(.primary) {
+  background: transparent !important;
+  border: 1px solid #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+[data-theme="dark"] button[class*="outline"]:hover,
+[data-theme="dark"] .btn-outline:hover {
+  background: #374151 !important;
+  border-color: #6b7280 !important;
+}
+
+/* Modal - Stats cards superiores */
+[data-theme="dark"] .modal-container .stat-card,
+[data-theme="dark"] .modal-content .stat-card {
+  background: #252525 !important;
+}
+
+[data-theme="dark"] .modal-container .stat-label,
+[data-theme="dark"] .modal-content .stat-label,
+[data-theme="dark"] .modal-container p,
+[data-theme="dark"] .modal-content p {
+  color: #9ca3af !important;
+}
+
+/* Textos secundarios más visibles */
+[data-theme="dark"] .secondary-text,
+[data-theme="dark"] .helper-text,
+[data-theme="dark"] .meta-text,
+[data-theme="dark"] small {
+  color: #d1d5db !important;
+}
+
+/* Gráficas - área del chart */
+[data-theme="dark"] canvas {
+  background: transparent !important;
+}
+
+/* Timeline items */
+[data-theme="dark"] .timeline-item,
+[data-theme="dark"] .history-item {
+  background: #1a1a1a !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+/* Precio tachado más visible */
+[data-theme="dark"] .price-before,
+[data-theme="dark"] s,
+[data-theme="dark"] del {
+  color: #9ca3af !important;
+}
+
+/* Precio actual destacado */
+[data-theme="dark"] .price-after,
+[data-theme="dark"] .current-price {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* Porcentajes de cambio */
+[data-theme="dark"] .change-percentage {
+  font-weight: 700 !important;
+}
+
+/* Iconos y emojis */
+[data-theme="dark"] .icon,
+[data-theme="dark"] .emoji {
+  opacity: 0.9;
+}
+
+/* Headers de secciones */
+[data-theme="dark"] .section-header,
+[data-theme="dark"] .page-header {
+  border-bottom: 1px solid #2a2a2a !important;
+}
+
+/* Subtítulos de página */
+[data-theme="dark"] .page-subtitle,
+[data-theme="dark"] .section-subtitle {
+  color: #9ca3af !important;
+}

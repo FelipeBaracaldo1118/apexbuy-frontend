@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import logo from '../../assets/Logo APEX BUY.svg'
 import './Header.css';
 
 const Header = () => {
@@ -18,7 +19,7 @@ const Header = () => {
       <div className="header-content">
         {/* Logo */}
         <Link to="/dashboard" className="header-logo">
-          <img src="/logo.svg" alt="ApexBuy" />
+          <img src="../../assets/Logo APEX BUY.svg" alt="ApexBuy" />
           <span>ApexBuy</span>
         </Link>
 
