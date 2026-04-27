@@ -85,45 +85,58 @@ const History = () => {
     const now = new Date();
     const systems = ['Algoritmo de Precios v4', 'Regla de Margen Crítico', 'Usuario: Admin'];
 
-    // Precio base actual
-    let currentBasePrice = product.precio_compra;
-
-    // Generar 15 cambios en los últimos 30 días
+    // Precio actual del producto
+    const currentPrice = product.precio_compra;
+    
+    // Generar historial de 15 cambios secuenciales hacia atrás en el tiempo
+    let runningPrice = currentPrice;
+    
     for (let i = 0; i < 15; i++) {
-      const daysAgo = Math.floor(Math.random() * 30);
+      // Fecha secuencial: más reciente primero
+      const daysAgo = i * 2; // Cada cambio es 2 días atrás
       const date = new Date(now);
       date.setDate(date.getDate() - daysAgo);
-
-      // Variación aleatoria
-      const variation = 0.80 + Math.random() * 0.40; // ±20%
-      const newPrice = Math.round(currentBasePrice * variation);
       
-      // Calcular cambio respecto al precio anterior
-      const previousPrice = i === 0 ? currentBasePrice : history[history.length - 1].currentPrice;
-      const currentPrice = i === 0 ? currentBasePrice : newPrice;
-      
-      const change = ((currentPrice - previousPrice) / previousPrice * 100).toFixed(1);
-      const changeNum = parseFloat(change);
-
-      const type = changeNum > 0 ? 'bad' : 'good';
-      const system = systems[Math.floor(Math.random() * systems.length)];
-
-      history.push({
-        date: date,
-        previousPrice: previousPrice,
-        currentPrice: currentPrice,
-        change: changeNum,
-        type,
-        system,
-      });
-
-      // Actualizar base para el siguiente
-      if (i > 0) {
-        currentBasePrice = newPrice;
+      // Para el cambio más reciente (i=0), usar precio actual
+      if (i === 0) {
+        // Generar un precio anterior aleatorio
+        const variation = 0.92 + Math.random() * 0.16; // -8% a +8%
+        const previousPrice = Math.round(currentPrice / variation);
+        const change = ((currentPrice - previousPrice) / previousPrice * 100).toFixed(1);
+        const changeNum = parseFloat(change);
+        
+        history.push({
+          date: date,
+          previousPrice: previousPrice,
+          currentPrice: currentPrice,
+          change: changeNum,
+          type: changeNum > 0 ? 'bad' : 'good',
+          system: systems[Math.floor(Math.random() * systems.length)],
+        });
+        
+        runningPrice = previousPrice;
+      } else {
+        // Para cambios históricos, generar secuencialmente
+        const variation = 0.92 + Math.random() * 0.16; // -8% a +8%
+        const newPrice = Math.round(runningPrice * variation);
+        const change = ((runningPrice - newPrice) / newPrice * 100).toFixed(1);
+        const changeNum = parseFloat(change);
+        
+        history.push({
+          date: date,
+          previousPrice: newPrice,
+          currentPrice: runningPrice,
+          change: changeNum,
+          type: changeNum > 0 ? 'bad' : 'good',
+          system: systems[Math.floor(Math.random() * systems.length)],
+        });
+        
+        runningPrice = newPrice;
       }
     }
 
-    return history.sort((a, b) => b.date - a.date);
+    // Ya está ordenado de más reciente a más antiguo
+    return history;
   };
 
   const applyFilters = () => {

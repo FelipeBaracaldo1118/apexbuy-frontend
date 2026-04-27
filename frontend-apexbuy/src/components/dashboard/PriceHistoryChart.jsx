@@ -168,8 +168,8 @@ const PriceHistoryChart = () => {
       y: {
         beginAtZero: false,
         ticks: {
-          callback: function(value) {
-            return '$' + (value / 1000).toFixed(0) + 'K';
+          callback: function(value ) {
+            return '$' + ' precio';
           },
           font: {
             size: 11,

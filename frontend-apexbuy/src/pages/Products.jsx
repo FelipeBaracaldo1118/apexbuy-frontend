@@ -1,332 +1,208 @@
-// ============================================================================
-// PRODUCTS PAGE
-// ============================================================================
-// Catálogo completo de productos con búsqueda y filtros
-// ============================================================================
-
-import { useEffect, useState } from 'react';
-import { analysisAPI } from '../services/api';
-import { useNotification } from '../context/NotificationContext';
-import { exportToExcel, formatOpportunitiesForExport } from '../utils/exportUtils';
-import Header from '../components/layout/Header';
-import Sidebar from '../components/layout/Sidebar';
+import React, { useState, useEffect } from 'react';
+import apiService from '../services/api';
+import ProductCompetitorModal from '../components/products/ProductCompetitorModal';
 import './Products.css';
 
 const Products = () => {
-  const { success, error: showError } = useNotification();
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterSource, setFilterSource] = useState('all');
-  const [filterMargin, setFilterMargin] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [filters, setFilters] = useState({
+    search: '',
+    source: 'all',
+    margin: 'all',
+  });
 
   useEffect(() => {
-    loadProducts();
+    fetchProducts();
   }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [searchTerm, filterSource, filterMargin, products]);
-
-  const loadProducts = async () => {
+  const fetchProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await analysisAPI.getOpportunities();
-      setProducts(data || []);
+      const response = await apiService.analysis.getCompetitorsDetail();
+      setProducts(response.data || response);
     } catch (error) {
-      console.error('Error cargando productos:', error);
-      showError('Error cargando catálogo de productos');
+      console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const applyFilters = () => {
-    let filtered = [...products];
+  const formatPrice = (price) => {
+    return `$${Math.round(price).toLocaleString('es-CO')}`;
+  };
 
-    // Filtrar por búsqueda
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.producto.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Aplicar filtros
+  const filteredProducts = products.filter(product => {
+    // Búsqueda
+    if (filters.search && !product.producto.toLowerCase().includes(filters.search.toLowerCase())) {
+      return false;
     }
 
-    // Filtrar por fuente
-    if (filterSource !== 'all') {
-      filtered = filtered.filter(product => product.fuente === filterSource);
+    // Fuente
+    if (filters.source !== 'all' && product.fuente !== filters.source) {
+      return false;
     }
 
-    // Filtrar por margen
-    if (filterMargin !== 'all') {
-      if (filterMargin === 'high') {
-        filtered = filtered.filter(product => parseFloat(product.margen_porcentaje) >= 25);
-      } else if (filterMargin === 'medium') {
-        filtered = filtered.filter(product => 
-          parseFloat(product.margen_porcentaje) >= 15 && 
-          parseFloat(product.margen_porcentaje) < 25
-        );
-      } else if (filterMargin === 'low') {
-        filtered = filtered.filter(product => parseFloat(product.margen_porcentaje) < 15);
-      }
+    // Margen
+    if (filters.margin === 'high' && product.margen_promedio < 25) {
+      return false;
+    }
+    if (filters.margin === 'low' && product.margen_promedio >= 15) {
+      return false;
     }
 
-    setFilteredProducts(filtered);
-  };
+    return true;
+  });
 
-  const handleExportProducts = () => {
-    try {
-      const dataToExport = formatOpportunitiesForExport(filteredProducts);
-      exportToExcel(dataToExport, `productos-${new Date().toISOString().split('T')[0]}`);
-      success('Productos exportados exitosamente');
-    } catch (error) {
-      showError('Error al exportar productos');
-    }
-  };
-
-  const handleViewDetails = (product) => {
-    setSelectedProduct(product);
-  };
-
-  const closeModal = () => {
-    setSelectedProduct(null);
-  };
-
-  const getMarginClass = (margin) => {
-    const marginNum = parseFloat(margin);
-    if (marginNum >= 25) return 'high';
-    if (marginNum >= 15) return 'medium';
-    return 'low';
-  };
-
-  const getSourcesCount = () => {
-    return [...new Set(products.map(p => p.fuente))].length;
+  // Stats
+  const stats = {
+    total: filteredProducts.length,
+    highMargin: filteredProducts.filter(p => p.margen_promedio >= 25).length,
+    lowMargin: filteredProducts.filter(p => p.margen_promedio < 15).length,
+    sources: [...new Set(filteredProducts.map(p => p.fuente))].length,
   };
 
   if (loading) {
     return (
-      <div className="dashboard-container">
-        <Header />
-        <div className="dashboard-body">
-          <Sidebar />
-          <main className="dashboard-main">
-            <div className="products-loading">
-              <div className="spinner"></div>
-              <p>Cargando catálogo...</p>
-            </div>
-          </main>
-        </div>
+      <div className="products-container">
+        <div className="loading">Cargando productos...</div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard-container">
-      <Header />
-      <div className="dashboard-body">
-        <Sidebar />
-        <main className="dashboard-main">
-          <div className="dashboard-content">
-            {/* Header */}
-            <div className="products-header">
-              <div>
-                <h1>Catálogo de Productos</h1>
-                <p className="products-subtitle">
-                  {filteredProducts.length} productos de {getSourcesCount()} fuentes
-                </p>
-              </div>
-              <div className="products-actions">
-                <button className="btn-secondary" onClick={handleExportProducts}>
-                  📊 Exportar Catálogo
-                </button>
-              </div>
-            </div>
-
-            {/* Stats Summary */}
-            <div className="products-stats">
-              <div className="products-stat">
-                <span className="stat-value">{products.length}</span>
-                <span className="stat-label">Total Productos</span>
-              </div>
-              <div className="products-stat">
-                <span className="stat-value">
-                  {products.filter(p => parseFloat(p.margen_porcentaje) >= 25).length}
-                </span>
-                <span className="stat-label">Alto Margen (≥25%)</span>
-              </div>
-              <div className="products-stat">
-                <span className="stat-value">
-                  {products.filter(p => parseFloat(p.margen_porcentaje) < 15).length}
-                </span>
-                <span className="stat-label">Bajo Margen (&lt;15%)</span>
-              </div>
-              <div className="products-stat">
-                <span className="stat-value">{getSourcesCount()}</span>
-                <span className="stat-label">Fuentes Activas</span>
-              </div>
-            </div>
-
-            {/* Filters */}
-            <div className="products-filters">
-              <input
-                type="text"
-                placeholder="🔍 Buscar productos..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="filter-search"
-              />
-              <select
-                value={filterSource}
-                onChange={(e) => setFilterSource(e.target.value)}
-                className="filter-select"
-              >
-                <option value="all">Todas las Fuentes</option>
-                <option value="Bose">Bose</option>
-                <option value="Samsung">Samsung</option>
-                <option value="Ktronix">Ktronix</option>
-                <option value="Mansion">Mansion</option>
-                <option value="Falabella">Falabella</option>
-              </select>
-              <select
-                value={filterMargin}
-                onChange={(e) => setFilterMargin(e.target.value)}
-                className="filter-select"
-              >
-                <option value="all">Todos los Márgenes</option>
-                <option value="high">Alto (≥25%)</option>
-                <option value="medium">Medio (15-25%)</option>
-                <option value="low">Bajo (&lt;15%)</option>
-              </select>
-            </div>
-
-            {/* Products Grid */}
-            <div className="products-grid">
-              {filteredProducts.length === 0 ? (
-                <div className="products-empty">
-                  <p>No se encontraron productos</p>
-                </div>
-              ) : (
-                filteredProducts.map((product, index) => (
-                  <div key={index} className="product-card">
-                    <div className="product-header">
-                      <h3>{product.producto}</h3>
-                      <span className={`margin-badge ${getMarginClass(product.margen_porcentaje)}`}>
-                        {product.margen_porcentaje}%
-                      </span>
-                    </div>
-                    
-                    <div className="product-details">
-                      <div className="product-detail-row">
-                        <span className="detail-label">Precio Compra:</span>
-                        <span className="detail-value">
-                          ${product.precio_compra.toLocaleString('es-CO')}
-                        </span>
-                      </div>
-                      <div className="product-detail-row">
-                        <span className="detail-label">Precio Competencia:</span>
-                        <span className="detail-value">
-                          ${product.precio_competencia.toLocaleString('es-CO')}
-                        </span>
-                      </div>
-                      <div className="product-detail-row">
-                        <span className="detail-label">Ganancia:</span>
-                        <span className="detail-value success">
-                          ${product.ganancia.toLocaleString('es-CO')}
-                        </span>
-                      </div>
-                      <div className="product-detail-row">
-                        <span className="detail-label">Fuente:</span>
-                        <span className="detail-value">
-                          <span className="source-badge">{product.fuente}</span>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="product-decision">
-                      <span className={`decision-badge ${
-                        product.decision.includes('OPORTUNIDAD') ? 'opportunity' : 
-                        product.decision.includes('NO CONVIENE') ? 'no-buy' : 'neutral'
-                      }`}>
-                        {product.decision}
-                      </span>
-                    </div>
-
-                    <button 
-                      className="btn-secondary btn-full"
-                      onClick={() => handleViewDetails(product)}
-                    >
-                      Ver Detalles
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </main>
+    <div className="products-container">
+      <div className="products-header">
+        <div>
+          <h1>Catálogo de Productos</h1>
+          <p>{products.length} productos de {stats.sources} fuentes</p>
+        </div>
+        <button className="btn-primary" onClick={fetchProducts}>
+          📊 Exportar Catálogo
+        </button>
       </div>
 
-      {/* Modal de Detalles */}
-      {selectedProduct && (
-        <>
-          <div className="modal-backdrop" onClick={closeModal}></div>
-          <div className="modal">
-            <div className="modal-header">
-              <h2>{selectedProduct.producto}</h2>
-              <button className="modal-close" onClick={closeModal}>✕</button>
-            </div>
-            <div className="modal-body">
-              <div className="modal-section">
-                <h3>Información de Precios</h3>
-                <div className="modal-grid">
-                  <div className="modal-item">
-                    <span className="modal-label">Precio de Compra</span>
-                    <span className="modal-value">
-                      ${selectedProduct.precio_compra.toLocaleString('es-CO')}
-                    </span>
-                  </div>
-                  <div className="modal-item">
-                    <span className="modal-label">Precio Competencia</span>
-                    <span className="modal-value">
-                      ${selectedProduct.precio_competencia.toLocaleString('es-CO')}
-                    </span>
-                  </div>
-                  <div className="modal-item">
-                    <span className="modal-label">Ganancia</span>
-                    <span className="modal-value success">
-                      ${selectedProduct.ganancia.toLocaleString('es-CO')}
-                    </span>
-                  </div>
-                  <div className="modal-item">
-                    <span className="modal-label">Margen</span>
-                    <span className={`modal-value ${getMarginClass(selectedProduct.margen_porcentaje)}`}>
-                      {selectedProduct.margen_porcentaje}%
-                    </span>
-                  </div>
+      {/* Stats Cards */}
+      <div className="stats-grid">
+        <div className="stats-card">
+          <div className="stat-number">{stats.total}</div>
+          <div className="stat-label">TOTAL PRODUCTOS</div>
+        </div>
+        <div className="stats-card">
+          <div className="stat-number">{stats.highMargin}</div>
+          <div className="stat-label">ALTO MARGEN (≥25%)</div>
+        </div>
+        <div className="stats-card">
+          <div className="stat-number">{stats.lowMargin}</div>
+          <div className="stat-label">BAJO MARGEN (&lt;15%)</div>
+        </div>
+        <div className="stats-card">
+          <div className="stat-number">{stats.sources}</div>
+          <div className="stat-label">FUENTES ACTIVAS</div>
+        </div>
+      </div>
+
+      {/* Filtros */}
+      <div className="filters-container">
+        <input
+          type="text"
+          className="filter-search"
+          placeholder="🔍 Buscar productos..."
+          value={filters.search}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+        />
+
+        <select
+          className="filter-select"
+          value={filters.source}
+          onChange={(e) => setFilters({ ...filters, source: e.target.value })}
+        >
+          <option value="all">Todas las Fuentes</option>
+          {[...new Set(products.map(p => p.fuente))].map(source => (
+            <option key={source} value={source}>{source}</option>
+          ))}
+        </select>
+
+        <select
+          className="filter-select"
+          value={filters.margin}
+          onChange={(e) => setFilters({ ...filters, margin: e.target.value })}
+        >
+          <option value="all">Todos los Márgenes</option>
+          <option value="high">Alto Margen (≥25%)</option>
+          <option value="low">Bajo Margen (&lt;15%)</option>
+        </select>
+      </div>
+
+      {/* Products Grid */}
+      <div className="products-grid">
+        {filteredProducts.map((product, index) => (
+          <div key={index} className="product-card">
+            {/* Imagen */}
+            {product.imagen && (
+              <div className="product-image">
+                <img src={product.imagen} alt={product.producto} />
+              </div>
+            )}
+
+            {/* Info */}
+            <div className="product-info">
+              <h3>{product.producto}</h3>
+              <p className="product-source">Fuente: {product.fuente}</p>
+
+              <div className="product-prices">
+                <div className="price-item">
+                  <span className="price-label">Precio Compra:</span>
+                  <span className="price-value">{formatPrice(product.precio_compra)}</span>
+                </div>
+                <div className="price-item">
+                  <span className="price-label">Precio Venta Sugerido:</span>
+                  <span className="price-value">{formatPrice(product.precio_promedio)}</span>
+                </div>
+                <div className="price-item">
+                  <span className="price-label">Ganancia Estimada:</span>
+                  <span className="price-value success">{formatPrice(product.ganancia_promedio)}</span>
                 </div>
               </div>
 
-              <div className="modal-section">
-                <h3>Información de Fuente</h3>
-                <div className="modal-grid">
-                  <div className="modal-item">
-                    <span className="modal-label">Proveedor</span>
-                    <span className="modal-value">{selectedProduct.fuente}</span>
-                  </div>
-                  <div className="modal-item">
-                    <span className="modal-label">Decisión</span>
-                    <span className={`decision-badge ${
-                      selectedProduct.decision.includes('OPORTUNIDAD') ? 'opportunity' : 
-                      selectedProduct.decision.includes('NO CONVIENE') ? 'no-buy' : 'neutral'
-                    }`}>
-                      {selectedProduct.decision}
-                    </span>
-                  </div>
-                </div>
+              {/* Margen badge */}
+              <div className={`margin-badge ${product.margen_promedio >= 25 ? 'high' : 'low'}`}>
+                {product.margen_promedio}% Margen
               </div>
+
+              {/* Indicador de oportunidad */}
+              {product.margen_promedio >= 20 && (
+                <div className="opportunity-badge">
+                  ✅ OPORTUNIDAD
+                </div>
+              )}
+
+              {/* Botón análisis */}
+              <button
+                className="btn-analysis"
+                onClick={() => setSelectedProduct(product)}
+              >
+                📊 Ver Análisis Detallado
+              </button>
             </div>
           </div>
-        </>
+        ))}
+      </div>
+
+      {filteredProducts.length === 0 && (
+        <div className="empty-state">
+          <p>No hay productos que coincidan con los filtros</p>
+        </div>
+      )}
+
+      {/* Modal */}
+      {selectedProduct && (
+        <ProductCompetitorModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
       )}
     </div>
   );

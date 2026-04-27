@@ -53,6 +53,9 @@ export const analysisAPI = {
   // Obtener todas las oportunidades
   getOpportunities: () => api.get('/api/analysis/opportunities'),
 
+  // Obtener desglose detallado por competidor
+  getCompetitorsDetail: () => api.get('/api/analysis/competitors-detail'),
+
   // Obtener oportunidades filtradas
   getOpportunitiesFiltered: (params) => 
     api.get('/api/analysis/opportunities/filtered', { params }),
@@ -90,7 +93,7 @@ export const updateAPI = {
 };
 
 // ============================================================================
-// PRODUCTOS - ENDPOINTS (futuros)
+// PRODUCTOS - ENDPOINTS
 // ============================================================================
 
 export const productsAPI = {
@@ -105,7 +108,7 @@ export const productsAPI = {
 };
 
 // ============================================================================
-// GRUPOS - ENDPOINTS (futuros)
+// GRUPOS - ENDPOINTS
 // ============================================================================
 
 export const groupsAPI = {
@@ -120,4 +123,11 @@ export const groupsAPI = {
 // EXPORT DEFAULT
 // ============================================================================
 
-export default api;
+export default {
+  analysis: analysisAPI,
+  update: updateAPI,
+  products: productsAPI,
+  groups: groupsAPI,
+  // Exportar también la instancia de axios por si se necesita
+  raw: api,
+};
