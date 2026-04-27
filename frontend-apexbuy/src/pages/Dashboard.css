@@ -139,3 +139,39 @@
       width: 100%;
     }
   }
+/* ── Sync button states ── */
+.last-sync {
+  font-size: 0.8rem;
+  color: #16a34a;
+}
+.btn-loading {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+.btn-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Remove coming-soon section if it remains */
+.coming-soon { display: none; }
+
+/* ── Charts section spacing ── */
+.dashboard-charts {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--spacing-xl);
+  align-items: start;
+  margin-bottom: 0;
+}
+@media (max-width: 1100px) {
+  .dashboard-charts { grid-template-columns: 1fr; }
+}

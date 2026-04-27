@@ -50,11 +50,11 @@ api.interceptors.response.use(
 // ============================================================================
 
 export const analysisAPI = {
+  // Obtener oportunidades con desglose por competidor (para modal detalle)
+  getOpportunitiesDetail: () => api.get('/api/analysis/opportunities/detail'),
+
   // Obtener todas las oportunidades
   getOpportunities: () => api.get('/api/analysis/opportunities'),
-
-  // Obtener desglose detallado por competidor
-  getCompetitorsDetail: () => api.get('/api/analysis/competitors-detail'),
 
   // Obtener oportunidades filtradas
   getOpportunitiesFiltered: (params) => 
@@ -63,9 +63,16 @@ export const analysisAPI = {
   // Obtener estadísticas globales
   getStats: () => api.get('/api/analysis/stats'),
 
-  // Obtener historial de precio de un producto
+  // Obtener historial de precio de un producto específico (requiere UUID)
   getPriceHistory: (productId, limit = 30) => 
     api.get(`/api/analysis/product/${productId}/history`, { params: { limit } }),
+
+  // Obtener historial agregado de todos los productos (NO requiere UUID)
+  getAggregatedHistory: (limit = 30) =>
+    api.get('/api/analysis/history/aggregate', { params: { limit } }),
+
+  // Obtener lista de productos con UUID real (para selector de gráfica)
+  getProductsList: () => api.get('/api/analysis/products'),
 
   // Obtener cambios de precio
   getPriceChanges: (productId, threshold = 5) => 
@@ -93,7 +100,7 @@ export const updateAPI = {
 };
 
 // ============================================================================
-// PRODUCTOS - ENDPOINTS
+// PRODUCTOS - ENDPOINTS (futuros)
 // ============================================================================
 
 export const productsAPI = {
@@ -108,7 +115,7 @@ export const productsAPI = {
 };
 
 // ============================================================================
-// GRUPOS - ENDPOINTS
+// GRUPOS - ENDPOINTS (futuros)
 // ============================================================================
 
 export const groupsAPI = {
@@ -123,11 +130,4 @@ export const groupsAPI = {
 // EXPORT DEFAULT
 // ============================================================================
 
-export default {
-  analysis: analysisAPI,
-  update: updateAPI,
-  products: productsAPI,
-  groups: groupsAPI,
-  // Exportar también la instancia de axios por si se necesita
-  raw: api,
-};
+export default api;

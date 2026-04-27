@@ -113,3 +113,62 @@
       height: 300px;
     }
   }
+/* ── Chart Controls (range tabs + select) ── */
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 12px);
+  flex-wrap: wrap;
+}
+
+.chart-range-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--gray-100, #f4f4f4);
+  border-radius: var(--border-radius-md, 8px);
+  padding: 3px;
+}
+
+.range-tab {
+  padding: 5px 14px;
+  border: none;
+  background: transparent;
+  border-radius: calc(var(--border-radius-md, 8px) - 2px);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--secondary-gray, #828280);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  letter-spacing: 0.03em;
+}
+
+.range-tab:hover {
+  background: rgba(225, 38, 19, 0.07);
+  color: var(--primary-red, #E12613);
+}
+
+.range-tab.active {
+  background: var(--white, #fff);
+  color: var(--primary-red, #E12613);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+/* Dark mode for controls */
+[data-theme="dark"] .chart-range-tabs {
+  background: var(--gray-700, #374151);
+}
+
+[data-theme="dark"] .range-tab.active {
+  background: var(--gray-600, #4B5563);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .chart-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .chart-select {
+    flex: 1;
+  }
+}
