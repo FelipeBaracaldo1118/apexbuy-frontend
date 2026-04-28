@@ -389,8 +389,10 @@ const ProductModal = ({ product, onClose }) => {
                             {new Date(c.fecha).toLocaleDateString('es-CO', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}
                           </td>
                           <td>
-                            <a href={SOURCE_URLS[c.fuente] || '#'} target="_blank"
-                              rel="noopener noreferrer" className="comp-link">Ver sitio →</a>
+                            <a href={c.source_url || SOURCE_URLS[c.fuente] || '#'}
+                              target="_blank" rel="noopener noreferrer" className="comp-link">
+                              Ver producto →
+                            </a>
                           </td>
                         </tr>
                       );

@@ -82,7 +82,11 @@ const ProductHistoryModal = ({ product, onClose }) => {
           y: {
             beginAtZero: false,
             ticks: {
-              callback: (value) => `$${(value / 1000).toFixed(0)}k`,
+              callback: (value) => {
+                if (value >= 1000000) return '$' + (value / 1000000).toFixed(1) + 'M';
+                if (value >= 1000) return '$' + Math.round(value / 1000) + 'K';
+                return '$' + value;
+              },
               font: { size: 11 }
             },
             grid: {
@@ -127,6 +131,9 @@ const ProductHistoryModal = ({ product, onClose }) => {
     return { maxIncrease, maxDecrease, avgChange, minPrice, maxPrice };
   };
 
+  const formatCOP = (value) =>
+    '$' + Math.round(Number(value) || 0).toLocaleString('es-CO');
+
   const stats = getStats();
 
   return (
@@ -148,19 +155,19 @@ const ProductHistoryModal = ({ product, onClose }) => {
             <div className="modal-stat">
               <span className="stat-label">Precio Actual</span>
               <span className="stat-value primary">
-                ${product.currentPrice.toLocaleString('es-CO')}
+                {formatCOP(product.currentPrice)}
               </span>
             </div>
             <div className="modal-stat">
               <span className="stat-label">Precio Mínimo</span>
               <span className="stat-value success">
-                ${stats.minPrice.toLocaleString('es-CO')}
+                {formatCOP(stats.minPrice)}
               </span>
             </div>
             <div className="modal-stat">
               <span className="stat-label">Precio Máximo</span>
               <span className="stat-value error">
-                ${stats.maxPrice.toLocaleString('es-CO')}
+                {formatCOP(stats.maxPrice)}
               </span>
             </div>
             <div className="modal-stat">
@@ -197,8 +204,7 @@ const ProductHistoryModal = ({ product, onClose }) => {
                     </div>
                     <div className="timeline-item-body">
                       <span className="timeline-price">
-                        ${change.previousPrice.toLocaleString('es-CO')} → 
-                        ${change.currentPrice.toLocaleString('es-CO')}
+                        {formatCOP(change.previousPrice)} → {formatCOP(change.currentPrice)}
                       </span>
                       <span className="timeline-system">{change.system}</span>
                     </div>
