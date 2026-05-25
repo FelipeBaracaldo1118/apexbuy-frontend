@@ -1,6 +1,4 @@
-
-
-   .cost-card {
+.cost-card {
     background: var(--white);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
@@ -97,6 +95,14 @@
   
   .cost-metric-bar-fill.alert {
     background: var(--primary-red);
+  }
+
+  .cost-metric-bar-fill.success {
+    background: #16a34a;
+  }
+
+  .cost-metric-value.success {
+    color: #16a34a;
   }
   
   .cost-metric-badge {

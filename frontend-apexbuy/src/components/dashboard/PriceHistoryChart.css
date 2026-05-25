@@ -13,10 +13,16 @@
   .chart-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: var(--spacing-xl);
     padding-bottom: var(--spacing-lg);
     border-bottom: 1px solid var(--gray-200);
+    gap: var(--spacing-lg);
+  }
+
+  .chart-header > div:first-child {
+    min-width: 0;
+    flex-shrink: 0;
   }
   
   .chart-header h3 {
@@ -24,6 +30,7 @@
     color: var(--primary-black);
     margin-bottom: var(--spacing-xs);
     font-weight: 600;
+    white-space: nowrap;
   }
   
   .chart-subtitle {
@@ -98,13 +105,17 @@
   }
   
   /* Responsive */
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .chart-header {
       flex-direction: column;
-      gap: var(--spacing-md);
       align-items: stretch;
+      gap: var(--spacing-md);
     }
-  
+
+    .chart-header h3 {
+      white-space: normal;
+    }
+
     .chart-select {
       width: 100%;
     }

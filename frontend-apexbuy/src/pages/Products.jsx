@@ -3,6 +3,7 @@
 // ============================================================================
 
 import { useEffect, useState, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { analysisAPI } from '../services/api';
 import { useNotification } from '../context/NotificationContext';
 import Header from '../components/layout/Header';
@@ -38,6 +39,7 @@ const getDecisionClass = (d = '') => {
 
 const Products = () => {
   const { error: showError } = useNotification();
+  const location = useLocation();
   const [products, setProducts]                   = useState([]);
   const [filteredProducts, setFilteredProducts]   = useState([]);
   const [loading, setLoading]                     = useState(true);
@@ -50,6 +52,19 @@ const Products = () => {
 
   useEffect(() => { loadProducts(); }, []);
   useEffect(() => { applyFilters(); }, [searchTerm, filterSource, filterMargin, filterDecision, sortBy, products]);
+
+  // Auto-abrir modal si viene query param ?open=nombre desde el dashboard
+  useEffect(() => {
+    if (products.length === 0) return;
+    const params = new URLSearchParams(location.search);
+    const openName = params.get('open');
+    if (openName) {
+      const match = products.find(p =>
+        (p.producto || '').toLowerCase() === decodeURIComponent(openName).toLowerCase()
+      );
+      if (match) setSelectedProduct(match);
+    }
+  }, [products, location.search]);
 
   const loadProducts = async () => {
     try {
